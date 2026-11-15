@@ -42,7 +42,11 @@ local function respawnAtCheckpoint(player, state)
 	local character = player.Character
 	local root = character and character:FindFirstChild("HumanoidRootPart")
 	if root then
-		root.CFrame = pad.CFrame + Vector3.new(0, 3, 0)
+		-- Pad top is pad center + 0.5; root (hip) sits ~3 above the feet,
+		-- so +4 lands the feet just above the pad instead of sinking the
+		-- character into the platform (the old +3 put the feet below the
+		-- platform top and the character popped/floated).
+		root.CFrame = pad.CFrame + Vector3.new(0, 4, 0)
 	end
 end
 
