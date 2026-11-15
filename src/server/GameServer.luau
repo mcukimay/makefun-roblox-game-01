@@ -24,6 +24,26 @@ end
 
 local events = nil
 local players = {}
+local currentReport = nil
+
+-- Put the player back on their latest checkpoint: point the engine's own
+-- respawn at the checkpoint pad, and move the live character there too
+-- (covers the first spawn, which the engine may place before this runs).
+local function respawnAtCheckpoint(player, state)
+	if not currentReport then
+		return
+	end
+	local pad = currentReport.checkpoints[state.stage]
+	if not pad then
+		return
+	end
+	player.RespawnLocation = pad
+	local character = player.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	if root then
+		root.CFrame = pad.CFrame + Vector3.new(0, 3, 0)
+	end
+end
 
 local function getEvents()
 	if events then
@@ -124,11 +144,13 @@ function GameServer.onPlayerAdded(player)
 	}
 	players[player] = state
 	makeLeaderstats(player)
+	respawnAtCheckpoint(player, state)
 	if state.best then
 		getEvents().best:FireClient(player, state.best, formatTime(state.best))
 	end
 	local function wireCharacter(character)
 		local humanoid = character:WaitForChild("Humanoid")
+		respawnAtCheckpoint(player, state)
 		humanoid.Died:Connect(function()
 			state.deaths += 1
 			local stats = player:FindFirstChild("leaderstats")
@@ -162,6 +184,7 @@ function GameServer.wireCheckpoints(report)
 				return
 			end
 			state.stage = index
+			player.RespawnLocation = pad
 			local stats = player:FindFirstChild("leaderstats")
 			if stats then
 				stats.Stage.Value = index
@@ -294,6 +317,7 @@ function GameServer.startFallWatch()
 end
 
 function GameServer.start(report)
+	currentReport = report
 	getEvents()
 	GameServer.wireCheckpoints(report)
 	GameServer.wireCoins(report)
