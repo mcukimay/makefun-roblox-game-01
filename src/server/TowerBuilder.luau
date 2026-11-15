@@ -413,12 +413,24 @@ kinds.moverLong = function(report, parent, center, theme, index)
 end
 
 kinds.lavaRun = function(report, parent, center, theme, index)
-	local pool = newPart(parent, "LavaPool", Vector3.new(18, 1, 18), CFrame.new(center), TowerData.LAVA_COLOR, Enum.Material.Neon)
-	table.insert(report.killers, pool)
 	local dir = dirToNext(index)
-	for i = 1, 4 do
-		local padPos = center + dir * (-7.5 + i * 5) + Vector3.new((i % 2 == 1 and 2 or -2), 1, 0)
-		newPart(parent, "SafePad", Vector3.new(3.5, 1, 3.5), CFrame.new(padPos), theme.trim, Enum.Material.SmoothPlastic)
+	local side = Vector3.new(-dir.Z, 0, dir.X)
+	-- Pool shifted 2 studs toward the next stage and shrunk to 10x10 so it
+	-- never overhangs the checkpoint platform: the old 18x18 pool hung over
+	-- the checkpoint pad and a standing player's head clipped the lava,
+	-- killing him on every respawn.
+	local poolCenter = center + dir * 2
+	local pool = newPart(parent, "LavaPool", Vector3.new(10, 1, 10), CFrame.new(poolCenter), TowerData.LAVA_COLOR, Enum.Material.Neon)
+	table.insert(report.killers, pool)
+	-- Step stone on the checkpoint platform: splits the tall first climb.
+	newPart(parent, "StepPad", Vector3.new(4, 1, 4),
+		CFrame.new(center - dir * 8.5 + Vector3.new(0, -2, 0)), theme.trim, Enum.Material.SmoothPlastic)
+	-- Two stepping stones over the pool, both standing jumps. The old four
+	-- pads zigzagged in world X, which made one gap ~9 studs — unjumpable
+	-- from a standing start on a tiny pad.
+	for i = 1, 2 do
+		local padPos = center + dir * (-5.5 + (i - 1) * 1.5) + side * (i % 2 == 1 and 1.5 or -1.5) + Vector3.new(0, 1, 0)
+		newPart(parent, "SafePad", Vector3.new(4, 1, 4), CFrame.new(padPos), theme.trim, Enum.Material.SmoothPlastic)
 	end
 	addCoin(report, parent, center + Vector3.new(0, 2.5, 0))
 	coinArc(report, parent, center, 2, 6, 2.5)
