@@ -5,6 +5,7 @@
 local TowerBuilder = require(script.Parent.TowerBuilder)
 local ObstacleRunner = require(script.Parent.ObstacleRunner)
 local GameServer = require(script.Parent.GameServer)
+local Leaderboards = require(script.Parent.Leaderboards)
 
 local world = Instance.new("Folder")
 world.Name = "MiloTower"
@@ -16,3 +17,4 @@ ObstacleRunner.startMovers(report.movers)
 ObstacleRunner.startSpinLoop(report.coins, report.spinners)
 ObstacleRunner.wireCrumblers(report.crumblers)
 GameServer.start(report)
+Leaderboards.start(world)

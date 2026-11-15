@@ -11,6 +11,7 @@ local DataStoreService = game:GetService("DataStoreService")
 local Workspace = game:GetService("Workspace")
 
 local TowerData = require(script.Parent.TowerData)
+local Leaderboards = require(script.Parent.Leaderboards)
 
 local GameServer = {}
 
@@ -129,6 +130,9 @@ function GameServer.finishRun(player)
 	if not state.best or elapsed < state.best then
 		state.best = elapsed
 		isBest = saveBest(player, elapsed)
+	end
+	if isBest then
+		Leaderboards.recordTime(player, math.floor(elapsed * 1000 + 0.5))
 	end
 	getEvents().finished:FireClient(player, elapsed, state.coins, isBest, formatTime(elapsed))
 end
