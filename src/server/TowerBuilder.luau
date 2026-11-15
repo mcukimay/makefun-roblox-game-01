@@ -211,7 +211,7 @@ kinds.start = function(report, parent, center, theme, index)
 	ground.Color = Color3.fromRGB(120, 88, 58)
 	addCheckpoint(report, parent, center, 0)
 	buildMiloStatue(parent, center + Vector3.new(-8, 1, -8))
-	addBoard(parent, center + Vector3.new(0, 4, -11), center,
+	addBoard(parent, center + Vector3.new(8, 4, 10), center,
 		"MILO'S MOLE DIG",
 		"Milo the mole is trapped at the bottom of the mine. Climb 24 stages to the sunlight! Green pads save your spot. Grab gold coins. Red lava and spinning bars send you back. SPACE jumps. Reach the gold pad at the top!")
 	addTorch(parent, center + Vector3.new(10, 1, -10))
