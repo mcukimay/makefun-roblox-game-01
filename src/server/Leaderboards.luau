@@ -117,14 +117,14 @@ local function buildLobby(world)
 	lobby.Name = "MiloLobby"
 	lobby.Parent = world
 
-	-- Deck behind the spawn, flush with the start platform's top (y = 1) so
-	-- the player walks straight onto it. The start platform spans z -13..13
-	-- and stage 1 climbs off its +z side, so the deck hangs off the -z edge
-	-- where nothing else stands.
+	-- Deck in FRONT of the spawn, toward the tower, so the board is visible
+	-- the moment the player spawns. The old spot (behind spawn, -z) sat
+	-- directly behind the "MILO'S MOLE DIG" title sign, which hid the board
+	-- almost completely — the player never saw it.
 	local deck = Instance.new("Part")
 	deck.Name = "LobbyDeck"
 	deck.Size = Vector3.new(14, 1, 6)
-	deck.CFrame = CFrame.new(12, 0.5, -16)
+	deck.CFrame = CFrame.new(12, 0.5, 16)
 	deck.Color = Color3.fromRGB(90, 66, 44)
 	deck.Material = Enum.Material.Wood
 	deck.Anchored = true
@@ -134,7 +134,7 @@ local function buildLobby(world)
 	local board = Instance.new("Part")
 	board.Name = "TopTimesBoard"
 	board.Size = Vector3.new(12, 8, 0.6)
-	board.CFrame = CFrame.lookAt(Vector3.new(12, 4.5, -18.5), Vector3.new(12, 0, 0), Vector3.yAxis)
+	board.CFrame = CFrame.lookAt(Vector3.new(12, 4.5, 18.5), Vector3.new(12, 0, 0), Vector3.yAxis)
 	board.Color = Color3.fromRGB(70, 48, 28)
 	board.Material = Enum.Material.Wood
 	board.Anchored = true
