@@ -24,7 +24,9 @@ local function newPart(parent, name, size, cframe, color, material)
 end
 
 local function flatCFrame(pos, lookAt)
-	return CFrame.lookAt(pos, lookAt, Vector3.yAxis)
+	-- Aim at the same height so boards stand vertical instead of leaning
+	-- back toward a ground-level target (looked "under the ground").
+	return CFrame.lookAt(pos, Vector3.new(lookAt.X, pos.Y, lookAt.Z), Vector3.yAxis)
 end
 
 -- Direction from this stage toward the next one, horizontal only.

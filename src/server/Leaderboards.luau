@@ -131,11 +131,14 @@ local function buildLobby(world)
 	deck.Anchored = true
 	deck.Parent = lobby
 
-	-- Board on the deck's far edge, front facing the spawn point.
+	-- Board on the deck's far edge, front facing the spawn point. The lookAt
+	-- target is at the board's own height so the board stands perfectly
+	-- vertical — aiming at the ground point made it lean back ~14° and read
+	-- as "lying under the ground" from above.
 	local board = Instance.new("Part")
 	board.Name = "TopTimesBoard"
 	board.Size = Vector3.new(12, 8, 0.6)
-	board.CFrame = CFrame.lookAt(Vector3.new(12, 4.5, -18.5), Vector3.new(12, 0, 0), Vector3.yAxis)
+	board.CFrame = CFrame.lookAt(Vector3.new(12, 4.5, -18.5), Vector3.new(12, 4.5, 0), Vector3.yAxis)
 	board.Color = Color3.fromRGB(70, 48, 28)
 	board.Material = Enum.Material.Wood
 	board.Anchored = true
